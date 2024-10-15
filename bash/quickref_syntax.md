@@ -17,8 +17,7 @@ Licensed under the MIT License. See LICENSE file for details.
     - [Functions & Arrays](#functions--arrays)
     - [Evaluations](#evaluations)
     - [File Operations](#file-operations)
-    - [Job Control](#job-control)
-    - [Conditional Tests](#conditional-tests)
+    - [Conditional Expressions](#conditional-expressions)
     - [Debugging](#debugging)
     - [Miscellaneous](#miscellaneous)
 
@@ -32,8 +31,8 @@ Licensed under the MIT License. See LICENSE file for details.
 | `;`      | Command separator           | `cmd1; cmd2`               |
 | `&`      | Run in background           | `cmd1 &`                   |
 | `\|`     | Pipe output                 | `cmd1 \| cmd2`             |
-| `&&`     | Run if success              | `cmd1 && cmd2`             |
-| `\|\|`   | Run if fail                 | `cmd1 \|\| cmd2`           |
+| `&&`     | Logical AND                 | `cmd1 && cmd2`             |
+| `\|\|`   | Logical OR                  | `cmd1 \|\| cmd2`           |
 | `>`      | Redirect stdout (overwrite) | `cmd > file.txt`           |
 | `>>`     | Redirect stdout (append)    | `echo "Hello" >> file.txt` |
 | `2>`     | Redirect stderr             | `cmd1 2> error.log`        |
@@ -73,12 +72,14 @@ Licensed under the MIT License. See LICENSE file for details.
 
 ## Evaluations
 
-| Syntax   | Example                   |
-|----------|---------------------------|
-| `[]`     | `[ "$var" -eq 1 ]`        |
-| `[[ ]]`  | `[[ "$var" == "value" ]]` |
-| `$(( ))` | `echo $((5 + 3))`         |
-| `let`    | `let count+=1`            |
+| Syntax   | Example                     |
+|----------|-----------------------------|
+| `[]`     | `[ "$var" -eq 1 ]`\*        |
+| `[[ ]]`  | `[[ "$var" == "value" ]]`\* |
+| `$(( ))` | `echo $((5 + 3))`           |
+| `let`    | `let count+=1`              |
+
+* `[[ ]]` is bash's extended version of the POSIX `[ ]` more versatile way to evaluate conditions and offers more features than `[ ]`.
 
 ## File Operations
 
@@ -90,28 +91,35 @@ Licensed under the MIT License. See LICENSE file for details.
 | `\|`    | `cmd1 \| cmd2`            |
 | `tee`   | `cmd \| tee file.txt`     |
 
-## Job Control
 
-| Command  | Example              |
-|----------|----------------------|
-| `&`      | `cmd &`              |
-| `wait`   | `wait $pid`          |
-| `jobs`   | `jobs`               |
-| `$!`     | `sleep 10 & echo $!` |
-| `fg`     | `fg %1`              |
-| `bg`     | `bg %1`              |
-| `disown` | `disown %1`          |
-| `kill`   | `kill 1234`          |
+## Conditional Expressions
 
-## Conditional Tests
+|                      | True if. . .                                             |
+|----------------------|----------------------------------------------------------|
+| `-a file`            | file exists                                              |
+| `-d file`            | file exists and is a directory                           |
+| `-e file`            | file exists                                              |
+| `-f file`            | file exists and is a regular file                        |
+| `-h file`            | file exists and is a symbolic link                       |
+| `-r file`            | file exists and is readable                              |
+| `-s file`            | file exists and has a size greater than zero             |
+| `-w file`            | file exists and is writable                              |
+| `-x file`            | file exists and is executable                            |
+| `-L file`            | file exists and is a symbolic link                       |
+| `-N file`            | file exists and has been modified since it was last read |
+| `-n string`          | the length of string is non-zero                         |
+| `-z string`          | the length of string is zero                             |
+| `string1 == string2` | the strings are equal                                    |
+| `string1 != string2` | the strings are not equal                                |
+| `string1 < string2`  | string1 sorts before string2 lexicographically           |
+| `string1 > string2`  | string2 sorts after string2 lexicographically            |
+| `arg1 -eq arg2`      | arg1 is equal to arg2                                    |
+| `arg1 -ne arg2`      | arg1 is not equal to arg2                                |
+| `arg1 -lt arg2`      | arg1 is less than arg2                                   |
+| `arg1 -le arg2`      | arg1 is less than or equal to arg2                       |
+| `arg1 -gt arg2`      | arg1 is greater than arg2                                |
+| `arg1 -ge arg2`      | arg1 is greater than or equal to arg2                    |
 
-| Condition           | Example             |
-|---------------------|---------------------|
-| `-z` (empty)        | `[[ -z $VAR ]]`     |
-| `-n` (not empty)    | `[[ -n $VAR ]]`     |
-| `-d` (is directory) | `[[ -d /home ]]`    |
-| `-f` (is file)      | `[[ -f file.txt ]]` |
-| `-r` (is readable)  | `[[ -r file.txt ]]` |
 
 ## Debugging
 
